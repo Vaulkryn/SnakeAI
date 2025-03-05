@@ -1,0 +1,19 @@
+# AppIDs du cloud Photon #
+/config/
+#-------------------------
+
+# Librairie non utilisée #
+/lib/PhotonChatApi/
+#-------------------------
+
+# Fichiers de compilation #
+/lib/libs/
+/lib/PhotonRealtimeApi/bin/
+/lib/PhotonRealtimeApi/obj/
+/SnakeAI-AdminClient/bin/
+/SnakeAI-AdminClient/obj/
+/SnakeAI-AgentClient/bin/
+/SnakeAI-AgentClient/obj/
+/SnakeAI-PlayerClient/bin/
+/SnakeAI-PlayerClient/obj/
+#-------------------------

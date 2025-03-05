@@ -1,0 +1,35 @@
+* The namespaces starting with `ExitGames` are obsolete. Use `Photon.Client` and `Photon.Realtime` instead.
+* The `LoadBalancingClient` was renamed to `RealtimeClient`.
+* Removed `LoadBalancingPeer` class. Operations are now in the `RealtimeClient`. Methods starting with "Op" are now part of the RealtimeClient class instead of the peer. The RealtimePeer still contains the methods not starting with "Op".
+* The `LoadBalancingClient.LoadBalancingPeer` was replaced with `RealtimeClient.RealtimePeer` (which is the PhotonPeer instance now).
+* LoadBalancingClient.LoadBalancingPeer.SendOutgoingCommands() and DispatchIncomingCommands() can now be called as RealtimeClient.SendOutgoingCommands() and DispatchIncomingCommands(). RealtimeClient.Service() will call both.
+* The `ExitGames.Client.Photon.Hashtable` class was renamed to `Photon.Client.PhotonHashtable`. The client can only send `PhotonHashtable` now.
+* `ConnectToRegionMaster()`, `ConnectToMasterServer()`, `ConnectToNameServer()` have been removed. Use only `ConnectUsingSettings()` instead.
+* `LoadBalancingClient.CloudRegion` is obsolete. Use `RealtimeClient.CurrentRegion` instead.
+* `LoadBalancingClient.AppVersion` is obsolete. Set the version via AppSettings and `ConnectUsingSetting()` instead.
+* `AppId` setter now throws a `NotImplementedException`. Set the AppId in the `AppSettings` and use `ConnectUsingSettings()` instead.
+* Default `AuthMode` is now AuthOnceWss, using WSS on the Name Server. If WSS is causing issues, change this via AppSettings.AuthMode before calling ConnectUsingSettings.
+* The AppSettings.Protocol is being used after leaving the Name Server (unless you deliberately choose a different AuthMode than AuthOnceWss).
+* You can now set AppIdRealtime, AppIdFusion or AppIdQuantum in the `AppSettings`. When setting only one of these, ConnectUsingSettings will use it. The Chat API uses AppIdChat and Voice uses AppIdVoice respectively.
+* The `RaiseEventOptions` class was changed to a struct called `RaiseEventArgs`.
+* `EnterRoomParams` was renamed to `EnterRoomArgs`.
+* `OpJoinRandomRoomParams` was renamed to `JoinRandomRoomArgs`.
+* `RealtimeClient.ConnectionCallbackTargets` is now internal. Use `AddCallbackTarget()` and `RemoveCallbackTarget()` instead.
+* Logging changed considerably. We removed the SupportLogger entirely and now the RealtimeClient will log more, based on the given level.
+* There is a per-client prefix for log output that can be set and a timestamp can be added.
+* Enum `DebugLevel` was renamed to `LogLevel`. The enum names are now Pascal case.
+* It is not recommended anymore to inherit from the RealtimeClient (former LoadBalancingClient) class. The few virtual methods it had are no longer virtual.
+* The CreatePlayer method (formerly in LoadBalancingClient) is no longer virtual. It is recommended to not extend the Player class and instead just reference it.
+* SupportClass.StartBackgroundCalls(), StopBackgroundCalls() and StopAllBackgroundCalls() were removed. A Task, Timer or InvokeRepeating should be used instead.
+* We added an extension method ToStringFull() for PhotonHashtable and other classes to make logging easier. This can be used where SupportClass.DictionaryToString() was used earlier.
+* You don't need to create a ConnectionHandler for the client anymore. The RealtimeClient.Handler will automatically be created and started. The access to it means you can edit the KeepAliveInBackground and other values per client.
+* Statistics handling for the PhotonPeer and connections. Most values moved to the PhotonPeer.Stats (e.g. PeerBase.BytesIn, .BytesOut and PeerBase.timestampOfLastReceive). PhotonPeer.TrafficStatsEnabled was removed. 
+* Use TrafficStats.ToSnapshot() to create a TrafficStatsSnapshot and compare to other snapshots or the current TrafficStats to get a TrafficStatsDelta instance.
+* Removed WebRPC. Instead of doing web calls through Photon (WebRPCs in a nutshell), directly call your backend from the client. 
+* Removed WebFlags. There is currently no replacement, as this should be configured per app on the server side.
+
+* The following "using" definitions in your code could help resolve some renaming tasks (and can be removed / replaced later on):
+    using LoadBalancingClient = Photon.Realtime.RealtimeClient;
+    using RaiseEventOptions = Photon.Realtime.RaiseEventArgs;
+    using DebugLevel = Photon.Client.LogLevel;
+    using Hashtable = Photon.Client.PhotonHashtable;
